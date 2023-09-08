@@ -3,7 +3,7 @@ package by.itacademy.ganina.reader.impl;
 import by.itacademy.ganina.reader.DocumentReader;
 import by.itacademy.ganina.reader.DocumentReaderException;
 import by.itacademy.ganina.transport.Transport;
-import by.itacademy.ganina.utils.DocumentAdapterAndValidator;
+import by.itacademy.ganina.docs.impl.DocumentAdapterAndValidator;
 
 import java.io.BufferedReader;
 import java.io.File;

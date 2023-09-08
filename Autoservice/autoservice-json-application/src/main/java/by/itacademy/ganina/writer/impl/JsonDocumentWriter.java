@@ -4,6 +4,7 @@ import by.itacademy.ganina.transport.Transport;
 import by.itacademy.ganina.writer.DocumentWriter;
 import by.itacademy.ganina.writer.DocumentWriterException;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import java.io.BufferedWriter;
@@ -20,14 +21,22 @@ public class JsonDocumentWriter implements DocumentWriter {
             JSONWriter jsonWriter = new JSONWriter(bufferedWriter);
             jsonWriter.array();
             for (final Transport transport : transportList) {
-                jsonWriter.object()
-                        .key("type").value(transport.getType())
-                        .key("model").value(transport.getModel())
-                        .key("tax").value(transport.getTax())
-                        .endObject();
+                jsonWriter = transport.isValid() ?
+                        jsonWriter.object()
+                                .key("type").value(transport.getType())
+                                .key("model").value(transport.getModel())
+                                .key("tax").value(transport.getTax())
+                                .endObject()
+                        :
+                        jsonWriter.object()
+                                .key("type").value(transport.getType())
+                                .key("model").value(transport.getModel())
+                                .endObject();
             }
+
             jsonWriter.endArray();
             System.out.println(fileToWrite.getName() + " written to file with path:" + fileToWrite.getAbsolutePath());
+
         } catch (final JSONException | IOException ex) {
             throw new DocumentWriterException("Ошибка при записи файла " + fileToWrite.getAbsolutePath(), ex);
         }

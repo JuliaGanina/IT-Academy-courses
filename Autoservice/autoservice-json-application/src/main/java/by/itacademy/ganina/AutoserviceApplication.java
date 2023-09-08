@@ -4,8 +4,8 @@ import by.itacademy.ganina.reader.DocumentReader;
 import by.itacademy.ganina.sorting.SortingReader;
 import by.itacademy.ganina.sorting.impl.ConsoleSortingReader;
 import by.itacademy.ganina.transport.Transport;
-import by.itacademy.ganina.utils.DocumentAdapterAndValidator;
-import by.itacademy.ganina.utils.Documents;
+import by.itacademy.ganina.docs.impl.DocumentAdapterAndValidator;
+import by.itacademy.ganina.docs.Documents;
 import by.itacademy.ganina.writer.DocumentWriter;
 
 import java.util.*;
@@ -25,7 +25,7 @@ public class AutoserviceApplication {
                     validTransportList.add(transport);
                 }
             }
-            
+
             final SortingReader sortingReader = new ConsoleSortingReader();
             final Comparator<Transport> comparator = sortingReader.readSorting();
             if (comparator != null) {

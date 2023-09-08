@@ -16,6 +16,7 @@ public class ConsoleSortingReader implements SortingReader {
         try (Scanner scannerIn = new Scanner(System.in)) {
             System.out.println(("press: 'y' , if you want to sort lines in file, or 'stop' to see result now"));
             String command = scannerIn.nextLine();
+
             while (!command.equals("stop")) {
                 commands.clear();
                 if (command.equals("y")) {
@@ -27,6 +28,7 @@ public class ConsoleSortingReader implements SortingReader {
                 System.out.println(("press: 'y' , if you want to sort lines again, or 'stop' to see result now"));
                 command = scannerIn.nextLine();
             }
+
             return chooseComparator(commands);
         } catch (final RuntimeException ex) {
             throw new SortingReaderException("Ошибка чтения сортировки для транспорта", ex);
@@ -43,6 +45,7 @@ public class ConsoleSortingReader implements SortingReader {
                 + "        or 'l' to sort by low ");
         try {
             String command = scanner.nextLine();
+
             if (!isCommandValid(command)) {
                 System.out.println("your command is uncorrected, please, try again.");
                 command = scanCommand(index, scanner);
@@ -59,7 +62,7 @@ public class ConsoleSortingReader implements SortingReader {
             return comparator;
         }
 
-        List<Comparator<Transport>> comparatorList = new ArrayList<>();
+        final List<Comparator<Transport>> comparatorList = new ArrayList<>();
 
         for (String commandLine : commandsList) {
             String[] splitedCommandLine = commandLine.split("-");
@@ -91,5 +94,4 @@ public class ConsoleSortingReader implements SortingReader {
         }
         return comparator;
     }
-
 }
