@@ -4,6 +4,7 @@ import by.itacademy.ganina.reader.DocumentReader;
 import by.itacademy.ganina.reader.DocumentReaderException;
 import by.itacademy.ganina.transport.Transport;
 import by.itacademy.ganina.docs.impl.DocumentAdapterAndValidator;
+import by.itacademy.ganina.validation.processor.ValidationProcessorException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +19,13 @@ public class TextDocumentReader implements DocumentReader {
     public List<Transport> readFile(File fileToRead) throws DocumentReaderException {
         try (final BufferedReader reader = new BufferedReader(new FileReader(fileToRead, StandardCharsets.UTF_8))) {
             return reader.lines()
-                    .map(DocumentAdapterAndValidator::splitLines)
+                    .map(line -> {
+                        try {
+                            return DocumentAdapterAndValidator.splitLines(line);
+                        } catch (ValidationProcessorException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
                     .toList();
         } catch (final IOException ex) {
             throw new DocumentReaderException("Ошибка при чтении файла " + fileToRead, ex);

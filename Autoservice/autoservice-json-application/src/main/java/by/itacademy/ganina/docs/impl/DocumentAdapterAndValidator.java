@@ -8,6 +8,10 @@ import by.itacademy.ganina.transport.Transport;
 import by.itacademy.ganina.docs.AdapterAndValidator;
 import by.itacademy.ganina.docs.AdapterAndValidatorException;
 import by.itacademy.ganina.docs.DocumentType;
+import by.itacademy.ganina.validation.processor.ValidationProcessor;
+import by.itacademy.ganina.validation.processor.ValidationProcessorException;
+import by.itacademy.ganina.validation.processor.ValidationResult;
+import by.itacademy.ganina.validation.processor.impl.FieldsValidationProcessor;
 import by.itacademy.ganina.writer.DocumentWriter;
 import by.itacademy.ganina.writer.impl.JsonDocumentWriter;
 import by.itacademy.ganina.writer.impl.TextDocumentWriter;
@@ -34,7 +38,7 @@ public class DocumentAdapterAndValidator implements AdapterAndValidator {
     }
 
     @Override
-    public DocumentReader getReader(String formatDocumentForReading) throws AdapterAndValidatorException {
+    public DocumentReader getReader(final String formatDocumentForReading) throws AdapterAndValidatorException {
         try {
             return READER_MAP.get(formatDocumentForReading);
         } catch (final IllegalArgumentException ex) {
@@ -43,7 +47,7 @@ public class DocumentAdapterAndValidator implements AdapterAndValidator {
     }
 
     @Override
-    public DocumentWriter getWriter(String formatDocumentForWriting) throws AdapterAndValidatorException {
+    public DocumentWriter getWriter(final String formatDocumentForWriting) throws AdapterAndValidatorException {
         try {
             return WRITER_MAP.get(formatDocumentForWriting);
         } catch (final IllegalArgumentException ex) {
@@ -51,28 +55,33 @@ public class DocumentAdapterAndValidator implements AdapterAndValidator {
         }
     }
 
-    public static Transport splitLines(String line) {
+    public static Transport splitLines(final String line) throws ValidationProcessorException {
         final String[] splitedLine = line.split(",\\s");
         final String type = splitedLine[0];
         final String model = splitedLine[1];
         Integer tax = 0; //по коду она не может быть final
-        final boolean isValid = (TYPE_VALIDATOR.test(type) && MODEL_VALIDATOR.test(model));
+        //прошлая версия валидации
+        //  final boolean isValid = (TYPE_VALIDATOR.test(type) && MODEL_VALIDATOR.test(model));
 
-        if (isValid) {
-            switch (type) {
+        final Transport transport = new Transport(type, model, tax, false);
+        final ValidationResult validationResult = new FieldsValidationProcessor().validate(transport);
+        transport.setValid(validationResult.isValid());
+        if (validationResult.isValid()) {
+             switch (type) {
                 case "автомобиль":
-                    tax = ServiceTax.AUTOMOBILE.getTax();
+                    transport.setTax(ServiceTax.AUTOMOBILE.getTax());
                     break;
                 case "мотоцикл":
-                    tax = ServiceTax.MOTOBIKE.getTax();
+                    transport.setTax(ServiceTax.MOTOBIKE.getTax());
                     break;
                 case "микроавтобус":
-                    tax = ServiceTax.MICROAUTOBUS.getTax();
+                    transport.setTax(ServiceTax.MICROAUTOBUS.getTax());
                     break;
                 default:
-                    tax = 0;
+                    transport.setTax(0);
             }
         }
-        return new Transport(type, model, tax, isValid);
+
+        return transport;
     }
 }

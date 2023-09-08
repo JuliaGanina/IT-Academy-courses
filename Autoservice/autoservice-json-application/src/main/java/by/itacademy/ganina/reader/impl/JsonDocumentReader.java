@@ -4,6 +4,7 @@ import by.itacademy.ganina.reader.DocumentReader;
 import by.itacademy.ganina.reader.DocumentReaderException;
 import by.itacademy.ganina.transport.Transport;
 import by.itacademy.ganina.docs.impl.DocumentAdapterAndValidator;
+import by.itacademy.ganina.validation.processor.ValidationProcessorException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class JsonDocumentReader implements DocumentReader {
             throw new DocumentReaderException("Ошибка при чтении JSON контента", ex);
         } catch (final IOException ex) {
             throw new DocumentReaderException("Ошибка при чтении файла " + fileToRead, ex);
-        } catch (final IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException | ValidationProcessorException ex) {
             throw new DocumentReaderException("Ошибка определения типа транспорта", ex);
         } catch (final RuntimeException ex) {
             throw new DocumentReaderException("Ошибка анализа прочтенного файла", ex);
