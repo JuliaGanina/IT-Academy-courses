@@ -23,8 +23,10 @@ public class AppServlet extends HttpServlet {
     public void init(ServletConfig servletConfig) throws ServletException {
         Transport transport = new Transport("auto", "bmw");
         Transport transport1 = new Transport("auto", "audi");
+        Transport transport2 = new Transport("auto", "444-!");
         transportList.add(transport);
         transportList.add(transport1);
+        transportList.add(transport2);
 
     }
 
@@ -44,7 +46,7 @@ public class AppServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(final HttpServletRequest request,final HttpServletResponse response) throws IOException {
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         String requestBody = null; //JSON type expected
         String requestParameters = null; // expected SortingType in format key: TYPE, MODEL, PRICE; value: H, L, N
 
@@ -69,10 +71,16 @@ public class AppServlet extends HttpServlet {
             }
         }
 // чтение сортировки и содержимого body  требует подключения модуля в общий проект
+        //поэтому пока это лишь заготовка вывода
         response.setContentType("text/html;charset=UTF-8");
 
         try (final PrintWriter writer = response.getWriter()) {
             writer.println("<h1>Hello AppServlet, doPOST</h1>");
+            writer.println("<table>");
+            for (Transport t : transportList) {
+               writer.println("<td><tr>"+t+"</td></tr>");
+            }
+            writer.println("</table>");
             writer.println("body :" + requestBody);
             writer.println("parameters :" + requestParameters);
         }
