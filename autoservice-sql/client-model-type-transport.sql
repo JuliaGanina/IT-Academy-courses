@@ -1,6 +1,6 @@
 CREATE TABLE model_type
 (
-    id         int2 generated always AS IDENTITY PRIMARY KEY,
+    id int2 generated always AS IDENTITY PRIMARY KEY,
     model_name VARCHAR(50) UNIQUE NOT NULL
 );
 
@@ -17,7 +17,7 @@ VALUES ('AUDI A6 2006'),
 
 CREATE TABLE transport_type
 (
-    id        int2 generated always AS IDENTITY PRIMARY KEY,
+    id int2 generated always AS IDENTITY PRIMARY KEY,
     type_name varchar(50) UNIQUE NOT NULL
 );
 
@@ -28,7 +28,7 @@ VALUES ('CAR'),
 
 CREATE TABLE client
 (
-    id         int4 generated always AS IDENTITY PRIMARY KEY,
+    id int4 generated always AS IDENTITY PRIMARY KEY,
     first_name varchar(30) NOT NULL,
     last_name  varchar(30) NOT NULL
 );
@@ -42,7 +42,7 @@ VALUES ('Pablo', 'Picasso'),
 
 CREATE TABLE transport
 (
-    id                int4 generated always AS IDENTITY PRIMARY KEY,
+    id int4 generated always AS IDENTITY PRIMARY KEY,
     model_type_id     int2 NOT NULL,
     transport_type_id int2 NOT NULL,
     client_id         int4,

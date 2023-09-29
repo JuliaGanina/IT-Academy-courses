@@ -4,9 +4,9 @@ import by.itacademy.ganina.model.client.Client;
 
 public class Transport {
 
-    private String model;
-    private TransportType transportType;
-    private Client client;
+    private final String model;
+    private final TransportType transportType;
+    private final Client client;
 
     public Transport(final String model,final TransportType transportType,final Client client) {
         this.model = model;

@@ -5,16 +5,14 @@ import by.itacademy.ganina.model.transport.Transport;
 import by.itacademy.ganina.model.transport.TransportType;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Properties;
 
 public class JdbcApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        final String propertiesFile = ".\\src\\main\\resources\\application.properties";
-        final Properties properties = getProperties(propertiesFile);
+        final Properties properties = getProperties("src/application.properties");
 
         try (final Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties)) {
             final String transportQuery = "SELECT model.model_name, type.type_name, c.first_name, c.last_name " +
@@ -44,15 +42,11 @@ public class JdbcApp {
         }
     }
 
-    private static Properties getProperties(final String fileName) {
-        try (final BufferedReader reader = new BufferedReader(new FileReader(fileName, StandardCharsets.UTF_8))) {
-            final Properties properties = new Properties();
+    private static Properties getProperties(final String fileName) throws IOException {
+        final Properties properties = new Properties();
+        try (final FileReader reader = new FileReader(fileName)) {
             properties.load(reader);
             return properties;
-        } catch (final FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
