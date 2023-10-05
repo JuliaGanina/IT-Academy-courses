@@ -1,7 +1,8 @@
 package by.itacademy.ganina.model;
 
-public class BaseModel implements IdField{
+public class BaseModel implements IdField {
 
+    @ColumnName(name = "id")
     private final Integer id;
 
     public BaseModel(final Integer id) {
